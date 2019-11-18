@@ -1,4 +1,6 @@
-    >>> from sklearn.metrics import classification_report, confusion_matrix
+Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 27 2018, 04:59:51) [MSC v.1914 64 bit (AMD64)] on win32
+Type "copyright", "credits" or "license()" for more information.
+>>> from sklearn.metrics import classification_report, confusion_matrix
 >>> from sklearn.model_selection import train_test_split
 >>> from sklearn.tree import DecisionTreeClassifier
 >>> from sklearn import tree
@@ -24,11 +26,9 @@
 11  overcast  mild     high   True  yes
 12  overcast   hot   normal  False  yes
 13     rainy  mild     high   True   no
-
 >>> tennis_data.outlook = tennis_data.outlook.replace('sunny',0)
 >>> tennis_data.outlook = tennis_data.outlook.replace('overcast', 1)
 >>> tennis_data.outlook = tennis_data.outlook.replace('rainy',2)
-
 >>> tennis_data.temp = tennis_data.temp.replace('hot',3)
 >>> tennis_data.temp = tennis_data.temp.replace('mild',4)
 >>> tennis_data.temp = tennis_data.temp.replace('cool',5)
@@ -54,38 +54,40 @@
 11        1     4         6    9.0    11
 12        1     3         7    8.0    11
 13        2     4         6    9.0    10
+>>>  X = np.array(pd.DataFrame(tennis_data, columns=['outlook','temp', 'humidity', 'windy']))
+SyntaxError: unexpected indent
 >>> X = np.array(pd.DataFrame(tennis_data, columns=['outlook','temp', 'humidity', 'windy']))
 >>> y = np.array(pd.DataFrame(tennis_data, columns=['play']))
 >>> X_train, X_test, y_train, y_test = train_test_split(X,y)
 >>> X_train
-array([[0., 5., 7., 8.],
-       [1., 3., 7., 8.],
-       [2., 4., 6., 9.],
-       [2., 4., 6., 8.],
-       [0., 4., 6., 8.],
-       [1., 3., 6., 8.],
-       [0., 3., 6., 9.],
-       [1., 5., 7., 9.],
-       [2., 5., 7., 9.],
-       [0., 3., 6., 8.]])
->>> X_test
 array([[2., 5., 7., 8.],
+       [0., 3., 6., 9.],
+       [1., 3., 7., 8.],
+       [2., 4., 6., 8.],
+       [1., 3., 6., 8.],
+       [2., 4., 6., 9.],
+       [0., 5., 7., 8.],
+       [2., 5., 7., 9.],
+       [0., 3., 6., 8.],
+       [2., 4., 7., 8.]])
+>>> X_test
+array([[0., 4., 6., 8.],
        [1., 4., 6., 9.],
-       [2., 4., 7., 8.],
-       [0., 4., 7., 9.]])
+       [0., 4., 7., 9.],
+       [1., 5., 7., 9.]])
 >>> y_train
 array([[11],
+       [10],
+       [11],
+       [11],
        [11],
        [10],
        [11],
        [10],
-       [11],
        [10],
-       [11],
-       [10],
-       [10]], dtype=int64)
+       [11]], dtype=int64)
 >>> y_test
-array([[11],
+array([[10],
        [11],
        [11],
        [11]], dtype=int64)
@@ -103,3 +105,69 @@ array([[11],
                                   special_characters = True)
 >>> dt_graph = pydotplus.graph_from_dot_data(dt_dot_data)
 >>> Image(dt_graph.create_png())
+<IPython.core.display.Image object>
+>>> dt_graph.write_png("graph.png")
+True
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf.score(X_train, y_train)))
+Train Set Score1 : {: .2f} 1.0
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf.score(X_test, y_test)))
+Train Set Score1 : {: .2f} 0.25
+>>> dt_clf2 = DesionTreeClassifier(criterion='entropy')
+Traceback (most recent call last):
+  File "<pyshell#45>", line 1, in <module>
+    dt_clf2 = DesionTreeClassifier(criterion='entropy')
+NameError: name 'DesionTreeClassifier' is not defined
+>>> dt_clf2 = DecisionTreeClassifier(criterion='entropy')
+>>> dt_clf2 = dt_clf2.fit(X_train, y_train)
+>>> dt_dot_data = tree.export_graphviz(dt_clf2, out_file = None,
+                                  feature_names = feature_names,
+                                  class_names = target_name,
+                                  filled = True, rounded = True,
+                                  special_characters = True)
+>>> dt_graph = pydotplus.graph_from_dot_data(dt_dot_data)
+>>> Image(dt_graph.create_png())
+<IPython.core.display.Image object>
+>>> dt_graph.write_png("graph2.png")
+True
+>>>  print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_train, y_train)))
+SyntaxError: unexpected indent
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_train, y_train)))
+Train Set Score1 : {: .2f} 1.0
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_test, y_test)))
+Train Set Score1 : {: .2f} 0.25
+>>> dt_clf2 = DecisionTreeClassifier(max_depth=2)
+>>> dt_clf2 = dt_clf2.fit(X_train, y_train)
+>>> dt_dot_data = tree.export_graphviz(dt_clf2, out_file = None,
+                                  feature_names = feature_names,
+                                  class_names = target_name,
+                                  filled = True, rounded = True,
+                                  special_characters = True)
+>>> dt_graph = pydotplus.graph_from_dot_data(dt_dot_data)
+>>> Image(dt_graph.create_png())
+<IPython.core.display.Image object>
+>>> dt_graph.write_png("graph3.png")
+True
+>>> dt_clf2 = DecisionTreeClassifier(max_depth=4)
+>>> dt_clf2 = dt_clf2.fit(X_train, y_train)
+>>> dt_dot_data = tree.export_graphviz(dt_clf2, out_file = None,
+                                  feature_names = feature_names,
+                                  class_names = target_name,
+                                  filled = True, rounded = True,
+                                  special_characters = True)
+>>> dt_graph = pydotplus.graph_from_dot_data(dt_dot_data)
+>>> Image(dt_graph.create_png())
+<IPython.core.display.Image object>
+>>> dt_graph.write_png("graph4.png")
+True
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_train, y_train)))
+Train Set Score1 : {: .2f} 1.0
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_test, y_test)))
+Train Set Score1 : {: .2f} 0.25
+>>> dt_clf2 = DecisionTreeClassifier(max_depth=2)
+>>> dt_clf2 = dt_clf2.fit(X_train, y_train)
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_train, y_train)))
+
+Train Set Score1 : {: .2f} 0.9
+>>> print("Train Set Score1 : {: .2f}",format(dt_clf2.score(X_test, y_test)))
+Train Set Score1 : {: .2f} 0.25
+>>> 
